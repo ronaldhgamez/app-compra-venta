@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended : false}))
 
 // rutas
-app.use(require('./src/routes/routes'));
+app.use(require('./routes/routes'));
 
 const port = 4000;
 app.listen(port);

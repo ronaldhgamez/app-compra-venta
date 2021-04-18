@@ -1,5 +1,5 @@
-//SSL permite cifrar el tráfico de datos entre dos servidores web protegiendo así la conexión
-/* const fs = require("fs");
+/* //SSL permite cifrar el tráfico de datos entre dos servidores web protegiendo así la conexión
+const fs = require("fs");
 
 dbConfig = function () {
     const config = {

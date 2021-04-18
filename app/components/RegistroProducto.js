@@ -27,19 +27,45 @@ export default class RegistroProducto extends React.Component {
         this.setState({ precio: prec });
     };
 
-    insertarProducto = async () => {
-        var respuesta = await fetch('/getUsers', {
-            method: 'post',
-            body: JSON.stringify({
-                "usuario": this.state.usuario,
-                "descripcion": this.state.descripcion,
-                "precio": this.state.precio
-            }),
-            headers: { 'Content-type': 'application/json' }
-        })
+    checkTextInput = async () => {
+        if (!this.state.descripcion.trim()) {
+            Alert.alert('Ingrese una descripción para el producto');
+            return;
+        }
+        if (!this.state.precio.trim()) {
+            alert('Ingrese un precio para su producto');
+            return;
+        }
+        const inserted = await insertarProducto();
+        if (inserted) {
+            Alert.alert('Producto registrado');
+            // navigation.navigate('Login');
+        } else {
+            Alert.alert("Ocurrió un problema, no se ha podido insertar el producto.")
+        }
+    };
 
-        var data = await respuesta.json()
-        return data.id
+    insertarProducto = async () => {
+        const url = 'http://10.0.2.2:4000/insertarProducto';
+        const body = {
+            "usuario": this.state.usuario,
+            "descripcion": this.state.descripcion,
+            "precio": this.state.precio
+        };
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+            let json = await response.json(); // json={ inserted: <true|false> }
+            return json.inserted;
+        } catch (error) {
+            Alert.alert("A ocurrido un error inesperado");
+        }
     }
 
     /* loadImageFromGallery = async (array) => {
@@ -109,7 +135,7 @@ export default class RegistroProducto extends React.Component {
                                 name='camera'
                                 color='#7a7a7a'
                                 containerStyle={styles.containerIcon}
-                                
+
                             />
                         )
                     }
