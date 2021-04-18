@@ -10,7 +10,7 @@ export default class RegistroProducto extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usuario: 'ronaldhg',
+            usuario: 'diazr',
             descripcion: '',
             precio: '',
             imagesSelected: []
@@ -29,21 +29,63 @@ export default class RegistroProducto extends React.Component {
 
     checkTextInput = async () => {
         if (!this.state.descripcion.trim()) {
-            Alert.alert('Ingrese una descripción para el producto');
+            this.showSimpleAlert('Ingrese una descripción para el producto');
             return;
         }
         if (!this.state.precio.trim()) {
-            alert('Ingrese un precio para su producto');
+            this.showSimpleAlert('Ingrese un precio para su producto');
             return;
         }
-        const inserted = await insertarProducto();
+        const inserted = await this.insertarProducto();
         if (inserted) {
-            Alert.alert('Producto registrado');
-            // navigation.navigate('Login');
+            this.alertOption();
         } else {
             Alert.alert("Ocurrió un problema, no se ha podido insertar el producto.")
         }
     };
+
+    alertOption = () => {
+        Alert.alert(
+            "Producto registrado",
+            "¿Desea registrar otro producto?",
+            [
+                {
+                    text: "No",
+                    //onPress: () => , // navigation.navigate('Login');
+                    style: "cancel",
+                },
+                {
+                    text: "Si",
+                    onPress: () => this.limpiarTextInputs(),
+                    style: "default",
+                },
+            ],
+            {
+                cancelable: true,
+                onDismiss: () => this.limpiarTextInputs()
+            }
+        );
+    }
+
+    showSimpleAlert = (msj) => {
+        Alert.alert(
+            msj, "",
+            [
+                {
+                    text: 'OK',
+                    style: 'Accept',
+                },
+            ],
+            {
+                cancelable: true
+            }
+        );
+    }
+
+    limpiarTextInputs = () => {
+        this.setState({ descripcion: '' })
+        this.setState({ precio: '' })
+    }
 
     insertarProducto = async () => {
         const url = 'http://10.0.2.2:4000/insertarProducto';
@@ -152,7 +194,7 @@ export default class RegistroProducto extends React.Component {
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={this.insertarProducto}
+                    onPress={this.checkTextInput}
                 >
                     <Text>Añadir producto</Text>
                 </TouchableOpacity>
