@@ -10,7 +10,7 @@ export default class RegistroProducto extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usuario: 'diazr',
+            usuario: this.props.route.params.usuario, // obtiene el usuario desde props
             descripcion: '',
             precio: '',
             imagesSelected: []
@@ -198,6 +198,7 @@ export default class RegistroProducto extends React.Component {
                 >
                     <Text>Añadir producto</Text>
                 </TouchableOpacity>
+
             </View>
         );
     }

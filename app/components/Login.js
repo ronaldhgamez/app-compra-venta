@@ -25,7 +25,7 @@ export default function Login({ navigation }) {
         //Do whatever you want
         const valido = await validarUsuario();
         if (valido) {
-            navigation.navigate('RegistroProducto')
+            navigation.navigate('RegistroProducto', { "usuario": user }) // pasamos el usuario a ventana registro
         } else {
             Alert.alert("El usuario o contraseña es incorrecto")
         }
