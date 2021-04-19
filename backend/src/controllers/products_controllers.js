@@ -1,6 +1,7 @@
 // Pool: Para realizar consultas a la base de datos
 const { Pool } = require('pg');
 const fs = require("fs");
+const { response } = require('express');
 
 const dbConfig = {
     user: 'admindb@database-app',
@@ -24,10 +25,20 @@ const insertarProducto = async (req, res) => {
         );
         res.send({ "inserted": true })
     } catch (e) {
-        res.send({ "inserted": false }) /* retorna false si no encuentra usuario */
+        res.send({ error: 0 }) /* retorna false si no encuentra usuario */
+    }
+}
+
+const getProducts = async (req, res) => {
+    try {
+        const respose = await pool.query('SELECT  * FROM Productos'); // await para que espere
+        res.send(respose['rows']);
+    } catch (e) {
+        console.log(e)
     }
 }
 
 module.exports = {
-    insertarProducto
+    insertarProducto,
+    getProducts
 }

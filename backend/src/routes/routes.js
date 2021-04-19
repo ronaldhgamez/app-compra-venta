@@ -9,6 +9,8 @@ router.get('/getUsers', userControlers.getUsers);
 router.post('/insertarUsuario', userControlers.insertarUsuario);
 router.post('/validarUsuario', userControlers.validarUsuario);
 router.post('/insertarProducto', prodControlers.insertarProducto);
+router.get('/getProducts', prodControlers.getProducts);
+
 
 // Default route.
 router.get('/', (req, res) => {
