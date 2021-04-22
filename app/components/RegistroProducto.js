@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextInput, View, TouchableOpacity, ScrollView, ImageStore, Alert } from 'react-native'
+import { Text, TextInput, View, TouchableOpacity, ScrollView, TouchableHighlight, ImageStore, Alert } from 'react-native'
 import { Icon, Avatar } from 'react-native-elements'
 import styles from '../Styles/RegistroStyle'
 import { map, size } from 'lodash' // imagenes
@@ -34,6 +34,10 @@ export default class RegistroProducto extends React.Component {
         }
         if (!this.state.precio.trim()) {
             this.showSimpleAlert('Ingrese un precio para su producto');
+            return;
+        }
+        if (this.state.imagesSelected.length < 1) {
+            this.showSimpleAlert('Ingrese una imagen para su producto');
             return;
         }
         const inserted = await this.insertarProducto();
@@ -83,8 +87,7 @@ export default class RegistroProducto extends React.Component {
     }
 
     limpiarTextInputs = () => {
-        this.setState({ descripcion: '' })
-        this.setState({ precio: '' })
+        this.setState({ descripcion: '', precio: '', imagesSelected: [] })
     }
 
     insertarProducto = async () => {
@@ -110,41 +113,35 @@ export default class RegistroProducto extends React.Component {
         }
     }
 
-    /* loadImageFromGallery = async (array) => {
-        const response = { status: false, image=null }
-        const resultPermissions = await 
-    }
-
-    imageSelect = async (imagesSelected) => {
-        const response = await loadImageFromGallery([4, 3])
-        if (!response.status) {
-            Alert.alert("No has seleccionado una imagen");
-        } else {
-            setImageSelected([...imagesSelected, response.image]);
-
-        }
-    } */
-
     pickImage = async () => {
-        /* let result = await ImagePicker.launchImageLibraryAsync({
+        let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [4, 4],
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
-            setImage(result.uri);
-        } */
-        Alert.alert("hola")
+            if (result.type !== "image") {
+                this.showSimpleAlert('El archivo seleccionado no es una imagen');
+                return;
+            }
+            const tempArray = this.state.imagesSelected;
+            tempArray.push(result.uri);
+            this.setState({ imagesSelected: tempArray });
+        }
     };
+
+    borrarImagen = (index) => {
+        const tempArray = this.state.imagesSelected;
+        tempArray.splice(index, 1);
+        this.setState({ imagesSelected: tempArray })
+    }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Registrar un producto</Text>
+                <Text style={styles.text}>Descripción del producto</Text>
 
                 <TextInput
                     multiline
@@ -166,37 +163,43 @@ export default class RegistroProducto extends React.Component {
                     value={this.state.precio}
                 />
 
+                <Text style={styles.text}>Toque el icono para agregar imágenes</Text>
                 <ScrollView
                     horizontal
                     style={styles.viewImages}
                 >
                     {
                         size(this.state.imagesSelected) < 10 && (
-                            <Icon
-                                type='material-community'
-                                name='camera'
-                                color='#7a7a7a'
-                                containerStyle={styles.containerIcon}
-
-                            />
+                            <TouchableHighlight
+                                onPress={() => { this.pickImage() }}
+                            >
+                                <Icon
+                                    type='material-community'
+                                    name='camera'
+                                    color='#7a7a7a'
+                                    containerStyle={styles.containerIcon}
+                                />
+                            </TouchableHighlight>
                         )
                     }
                     {
                         map(this.state.imagesSelected, (imageProduct, index) => (
                             <Avatar
                                 key={index}
-                                style={style.miniatura}
+                                style={styles.miniatura}
                                 source={{ uri: imageProduct }}
+                                onPress={() => { this.borrarImagen(index) }}
                             />
                         ))
                     }
                 </ScrollView>
+                <Text style={styles.textStyle}>* presione una imagen para borrar *</Text>
 
                 <TouchableOpacity
                     style={styles.button}
                     onPress={this.checkTextInput}
                 >
-                    <Text>Añadir producto</Text>
+                    <Text style={styles.buttonText}>Añadir producto</Text>
                 </TouchableOpacity>
 
             </View>

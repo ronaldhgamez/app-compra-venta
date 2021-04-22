@@ -6,14 +6,14 @@ export default StyleSheet.create({
         alignSelf: 'stretch'
     },
     text: {
-        fontSize: 25,
+        fontSize: 22,
         color: 'black',
         marginTop: 5,
         marginLeft: 5,
-        marginRight: 5,
-        paddingBottom: 10,
-        borderBottomColor: 'black',
-        borderBottomWidth: 1
+        marginRight: 10,
+        paddingBottom: 5,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.2
     },
     image: {
         height: 200,
@@ -26,12 +26,13 @@ export default StyleSheet.create({
         padding: 20,
         backgroundColor: '#f08080',
         marginTop: 30,
-        marginLeft: 40,
-        marginRight: 40
+        marginLeft: 70,
+        marginRight: 70,
+        borderRadius: 50
     },
     buttonText: {
         color: 'black',
-        fontSize: 20
+        fontSize: 18
     },
     textinput: {
         alignSelf: 'stretch',
@@ -40,25 +41,31 @@ export default StyleSheet.create({
         marginBottom: 10,
         marginLeft: 6,
         marginRight: 6,
+        borderBottomColor: 'gray',
     },
     viewImages: {
         flexDirection: 'row',
         marginHorizontal: 20,
-        marginTop: 30
-        /*  justifyContent: 'center',
-         marginTop: 30 */
+        marginTop: 20,
+        marginBottom: 10
     },
     containerIcon: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 10,
-        height: 70,
-        width: 70,
+        height: 85,
+        width: 85,
         backgroundColor: '#e3e3e3'
     },
     miniatura: {
-        width: 70,
-        height: 70,
-        marginRight: 10
+        width: 85,
+        height: 85,
+        marginRight: 5,
+        marginLeft: 5
+    },
+    textStyle: {
+        marginLeft: 20,
+        marginTop: 5,
+        marginBottom: 50,
+        color: 'green'
     }
 });
