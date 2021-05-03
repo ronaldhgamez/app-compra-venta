@@ -1,89 +1,101 @@
-import 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import { Text, View, Button, TextInput, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
+import 'react-native-gesture-handler';
 import style from '../Styles/Login_styles';
+import style_app from '../Styles/app_styles';
+import Spinner from 'react-native-loading-spinner-overlay';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
-import fetch from 'node-fetch'
+import {
+    validarUsuario
+} from '../Utilities/consultas'
 
 export default function Login({ navigation }) {
 
     const [user, setName] = useState("");
     const [pas, setPas] = useState("");
+    const [spinner, setSpi] = useState(false);
+    const [showAlert, setAlert] = useState(false);
+    const [msj, setMsj] = useState('');
 
     const checkTextInput = async () => {
         //Check the TextInput
         if (!user.trim()) {
-            Alert.alert('Porfavor Ingresar Usuario');
+            setMsj('Debe ingresar un usuario y una contraseña')
+            setAlert(true)
             return;
         }
-        //Check the TextInput
         if (!pas.trim()) {
-            Alert.alert('Porfavor Ingresar Contraseña');
+            setMsj('Por favor cree su contraseña');
+            setAlert(true)
             return;
         }
-        //Checked Successfully
-        //Do whatever you want
-        const valido = await validarUsuario();
+        setSpi(true)
+        const valido = await validarUsuario(user, pas);
+        setSpi(false)
         if (valido) {
-            navigation.navigate('RegistroProducto', { "usuario": user }) // pasamos el usuario a ventana registro
+            navigation.navigate('RegistroProducto', { "usuario": user }) // envía el usuario
         } else {
-            Alert.alert("El usuario o contraseña es incorrecto")
+            setMsj("El usuario o la contraseña es incorrecta")
+            setAlert(true)
         }
     };
 
-    const validarUsuario = async () => {
-        const url = 'http://10.0.2.2:4000/validarUsuario';
-        const body = { usuario: user, contrasena: pas };
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-            let json = await response.json(); // json={ valido: <true|false> }
-            return json.valido;
-        } catch (error) {
-            Alert.alert("A ocurrido un error inesperado");
-        }
-    }
-
     return (
         <View style={style.mainContainer}>
+            <Image
+                style={style.imageCar}
+                //source={require('../assets/carrito.png')}
+                source={require('../assets/bag.jpg')}
 
-            <Text>Usuario:</Text>
+            />
+            <Text style={style.textoPrincipal}>Tienda Online de Productos</Text>
 
             <TextInput
                 placeholder="usuario"
-                style={style.textInput}
+                style={style_app.textInput}
                 onChangeText={(val) => setName(val)}
             />
-
-            <Text></Text>
-
-            <Text>Contraseña:</Text>
 
             <TextInput
                 placeholder="contraseña"
                 secureTextEntry={true}
                 password={true}
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, minHeight: '5%', minWidth: '50%' }}
+                style={style_app.textInput}
                 onChangeText={(val) => setPas(val)}
             />
 
-            <Text></Text>
-
-            <Button
-                title="Iniciar Sesion"
+            <TouchableOpacity
+                style={style_app.button}
                 onPress={checkTextInput}
-            />
-            <Text></Text>
+            >
+                <Text style={style_app.buttonText}>Iniciar sesión</Text>
+            </TouchableOpacity>
 
-            <Button
-                title="Registrarse"
+            <TouchableOpacity
+                style={style_app.button}
                 onPress={() => navigation.navigate('Register')}
+            >
+                <Text style={style_app.buttonText}>Registrarme</Text>
+            </TouchableOpacity>
+
+            <Spinner
+                visible={spinner}
+                textContent={'Validando usuario...'}
+                textStyle={{ color: '#FFF' }}
+            />
+
+            <AwesomeAlert
+                show={showAlert}
+                showProgress={false}
+                title="Aviso"
+                message={msj}
+                closeOnTouchOutside={true}
+                closeOnHardwareBackPress={true}
+                showConfirmButton={true}
+                confirmText="OK"
+                confirmButtonColor="deepskyblue"
+                onConfirmPressed={() => {setAlert(false)}}
             />
         </View>
     )

@@ -1,71 +1,61 @@
 import { StyleSheet } from 'react-native'
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
     container: {
-        marginTop: 50,
-        alignSelf: 'stretch'
+        marginTop: 40,
+        justifyContent: 'center'
     },
-    text: {
-        fontSize: 22,
-        color: 'black',
-        marginTop: 5,
-        marginLeft: 5,
-        marginRight: 10,
-        paddingBottom: 5,
-        borderBottomColor: 'gray',
-        borderBottomWidth: 0.2
+    texto: {
+        marginLeft: wp('6'),
+        marginBottom: wp('2%'),
+        marginTop: wp('10%'),
+        fontSize: wp('5'),
+        fontFamily: 'sans-serif-medium',
+        fontWeight: 'bold',
     },
-    image: {
-        height: 200,
-        width: 200,
-        borderRadius: 100
+    inputDescrip: {
+        marginTop: wp('3'),
+        marginLeft: wp('6'),
+        height: hp('10%'),
+        width: wp('85%'),
+        borderColor: 'gray',
+        borderWidth: 0.4
     },
-    button: {
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        padding: 20,
-        backgroundColor: '#f08080',
-        marginTop: 30,
-        marginLeft: 70,
-        marginRight: 70,
-        borderRadius: 50
-    },
-    buttonText: {
-        color: 'black',
-        fontSize: 18
-    },
-    textinput: {
-        alignSelf: 'stretch',
-        height: 40,
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 6,
-        marginRight: 6,
-        borderBottomColor: 'gray',
+    inputPrecio: {
+        marginTop: wp('3'),
+        marginLeft: wp('6'),
+        height: hp('5%'),
+        width: wp('85%'),
+        borderColor: 'gray',
+        borderWidth: 0.4
     },
     viewImages: {
         flexDirection: 'row',
-        marginHorizontal: 20,
+        marginHorizontal: hp('3'),
         marginTop: 20,
         marginBottom: 10
     },
     containerIcon: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: 85,
-        width: 85,
+        height: hp('11'),
+        width: wp('21'),
         backgroundColor: '#e3e3e3'
     },
     miniatura: {
-        width: 85,
-        height: 85,
+        width: hp('11'),
+        height: wp('21'),
         marginRight: 5,
         marginLeft: 5
     },
     textStyle: {
-        marginLeft: 20,
-        marginTop: 5,
-        marginBottom: 50,
-        color: 'green'
+        marginLeft: wp('7'),
+        marginBottom: wp('10%'),
+        marginTop: wp('2'),
+        color: 'olivedrab'
     }
 });

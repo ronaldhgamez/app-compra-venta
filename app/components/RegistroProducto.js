@@ -1,9 +1,19 @@
 import React from 'react';
-import { Text, TextInput, View, TouchableOpacity, ScrollView, TouchableHighlight, ImageStore, Alert } from 'react-native'
+import {
+    Text, TextInput, View, TouchableOpacity,
+    ScrollView, TouchableHighlight
+} from 'react-native'
 import { Icon, Avatar } from 'react-native-elements'
-import styles from '../Styles/RegistroStyle'
 import { map, size } from 'lodash' // imagenes
 import * as ImagePicker from 'expo-image-picker';
+import Spinner from 'react-native-loading-spinner-overlay';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import styles from '../Styles/RegistroStyle'
+import style_app from '../Styles/app_styles'
+
+import {
+    insertarProducto
+} from '../Utilities/consultas'
 
 export default class RegistroProducto extends React.Component {
 
@@ -13,7 +23,13 @@ export default class RegistroProducto extends React.Component {
             usuario: this.props.route.params.usuario, // obtiene el usuario desde props
             descripcion: '',
             precio: '',
-            imagesSelected: []
+            imagesSelected: [],
+            spinner: false,
+            // alertas msjs
+            showAlert: false,
+            msj: '',
+            // alerta con opciones
+            showAlert2: false,
         };
     }
 
@@ -29,90 +45,32 @@ export default class RegistroProducto extends React.Component {
 
     checkTextInput = async () => {
         if (!this.state.descripcion.trim()) {
-            this.showSimpleAlert('Ingrese una descripción para el producto');
+            this.setState({ showAlert: true, msj: 'Ingrese una descripción para el producto' });
             return;
         }
         if (!this.state.precio.trim()) {
-            this.showSimpleAlert('Ingrese un precio para su producto');
+            this.setState({ showAlert: true, msj: 'Ingrese un precio para su producto' });
             return;
         }
         if (this.state.imagesSelected.length < 1) {
-            this.showSimpleAlert('Ingrese una imagen para su producto');
+            this.setState({ showAlert: true, msj: 'Ingrese una imagen para su producto' });
             return;
         }
-        const inserted = await this.insertarProducto();
+        this.setState({ spinner: true })
+        const inserted = await insertarProducto(this.state.usuario, this.state.descripcion, this.state.precio);
+        this.setState({ spinner: false })
         if (inserted) {
-            this.alertOption();
+            this.setState({ showAlert2: true })
         } else {
-            Alert.alert("Ocurrió un problema, no se ha podido insertar el producto.")
+            this.setState({ showAlert: true, msj: "Ocurrió un problema, no se ha podido insertar el producto." })
         }
     };
-
-    alertOption = () => {
-        Alert.alert(
-            "Producto registrado",
-            "¿Desea registrar otro producto?",
-            [
-                {
-                    text: "No",
-                    //onPress: () => , // navigation.navigate('Login');
-                    style: "cancel",
-                },
-                {
-                    text: "Si",
-                    onPress: () => this.limpiarTextInputs(),
-                    style: "default",
-                },
-            ],
-            {
-                cancelable: true,
-                onDismiss: () => this.limpiarTextInputs()
-            }
-        );
-    }
-
-    showSimpleAlert = (msj) => {
-        Alert.alert(
-            msj, "",
-            [
-                {
-                    text: 'OK',
-                    style: 'Accept',
-                },
-            ],
-            {
-                cancelable: true
-            }
-        );
-    }
 
     limpiarTextInputs = () => {
         this.setState({ descripcion: '', precio: '', imagesSelected: [] })
     }
 
-    insertarProducto = async () => {
-        const url = 'http://10.0.2.2:4000/insertarProducto';
-        const body = {
-            "usuario": this.state.usuario,
-            "descripcion": this.state.descripcion,
-            "precio": this.state.precio
-        };
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-            let json = await response.json(); // json={ inserted: <true|false> }
-            return json.inserted;
-        } catch (error) {
-            Alert.alert("A ocurrido un error inesperado");
-        }
-    }
-
+    // https://mixkit.co/free-stock-video/skyline-of-a-desert-with-the-moon-at-night-40047/
     pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -123,7 +81,7 @@ export default class RegistroProducto extends React.Component {
 
         if (!result.cancelled) {
             if (result.type !== "image") {
-                this.showSimpleAlert('El archivo seleccionado no es una imagen');
+                this.setState({ showAlert: true, msj: 'El archivo seleccionado no es una imagen' });
                 return;
             }
             const tempArray = this.state.imagesSelected;
@@ -141,19 +99,19 @@ export default class RegistroProducto extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Descripción del producto</Text>
+
+                <Text style={styles.texto}>Descripción del producto</Text>
 
                 <TextInput
                     multiline
-                    style={styles.textinput}
+                    style={styles.inputDescrip}
                     placeholder='Añade una descripción'
                     underlineColorAndroid={'transparent'}
-
                     onChange={this.updateDescription}
                     value={this.state.descripcion}
                 />
                 <TextInput
-                    style={styles.textinput}
+                    style={styles.inputPrecio}
                     placeholder='Precio'
                     keyboardType='numeric'
                     maxLength={15}  //setting limit of input
@@ -163,13 +121,13 @@ export default class RegistroProducto extends React.Component {
                     value={this.state.precio}
                 />
 
-                <Text style={styles.text}>Toque el icono para agregar imágenes</Text>
+                <Text style={styles.texto}>Toque el icono para agregar imágenes</Text>
                 <ScrollView
                     horizontal
                     style={styles.viewImages}
                 >
                     {
-                        size(this.state.imagesSelected) < 10 && (
+                        size(this.state.imagesSelected) < 5 && (
                             <TouchableHighlight
                                 onPress={() => { this.pickImage() }}
                             >
@@ -196,11 +154,73 @@ export default class RegistroProducto extends React.Component {
                 <Text style={styles.textStyle}>* presione una imagen para borrar *</Text>
 
                 <TouchableOpacity
-                    style={styles.button}
+                    style={style_app.button}
                     onPress={this.checkTextInput}
                 >
-                    <Text style={styles.buttonText}>Añadir producto</Text>
+                    <Text style={style_app.buttonText}>Añadir producto</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={style_app.button}
+                    onPress={() => this.props.navigation.navigate('Login')} // cambiar
+                >
+                    <Text style={style_app.buttonText}>Volver</Text>
+                </TouchableOpacity>
+
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Guardando producto, espere...'}
+                    textStyle={{ color: '#FFF' }}
+                />
+
+                <AwesomeAlert
+                    show={this.state.showAlert}
+                    showProgress={false}
+                    title="Aviso"
+                    message={this.state.msj}
+                    closeOnTouchOutside={true}
+                    closeOnHardwareBackPress={true}
+                    showConfirmButton={true}
+                    confirmText="Ok"
+                    confirmButtonColor="deepskyblue"
+                    onConfirmPressed={() => {
+                        this.setState({ showAlert: false })
+                        if (this.state.back) {
+                            this.props.navigation.navigate('Login')
+                        }
+                    }}
+                    onDismiss={() => { // click fuera de la alerta
+                        this.setState({ showAlert: false })
+                        if (this.state.back) {
+                            this.props.navigation.navigate('Login')
+                        }
+                    }}
+                />
+
+                <AwesomeAlert
+                    show={this.state.showAlert2}
+                    showProgress={false}
+                    title="Producto registrado"
+                    message="¿Desea registrar otro producto?"
+                    closeOnTouchOutside={true}
+                    closeOnHardwareBackPress={true}
+                    showCancelButton={true}
+                    showConfirmButton={true}
+                    cancelText="No"
+                    confirmText="Sí"
+                    confirmButtonColor="deepskyblue"
+                    onCancelPressed={() => {
+                        this.props.navigation.navigate('Login')
+                    }}
+                    onConfirmPressed={() => {
+                        this.setState({ showAlert2: false })
+                        this.limpiarTextInputs()
+                    }}
+                    onDismiss={() => { // click fuera de la alerta
+                        this.setState({ showAlert2: false })
+                        this.limpiarTextInputs()
+                    }}
+                />
 
             </View>
         );

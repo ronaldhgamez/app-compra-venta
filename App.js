@@ -6,17 +6,16 @@ import Login from './app/components/Login';
 import Register from './app/components/Register';
 import RegistroProducto from './app/components/RegistroProducto';
 
-
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown:false}}>
         <Stack.Screen
           name="Login"
           component={Login}
-          options={{ title: 'Ventana login' }}
+          options={{ title: 'Inicia sesión' }}
         />
         <Stack.Screen
           name="Register"
