@@ -11,8 +11,6 @@ import {
     insertarUsuario
 } from '../Utilities/consultas'
 
-import fetch from 'node-fetch'
-
 export default function Register({ navigation }) {
     const [name, setName] = useState("");
     const [lasname, setLasname] = useState("");

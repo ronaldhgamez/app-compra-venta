@@ -11,16 +11,26 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import styles from '../Styles/RegistroStyle'
 import style_app from '../Styles/app_styles'
 
+/* generates random ids for photos */
+import uuid from 'random-uuid-v4'
+
+/* to upload images to firebase */
+import storage from '@react-native-firebase/storage';
+
 import {
-    insertarProducto
-} from '../Utilities/consultas'
+    addProduct
+} from '../Utilities/products_consults'
+
+import {
+    uploadImages
+} from '../Utilities/images_upload'
 
 export default class RegistroProducto extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            usuario: this.props.route.params.usuario, // obtiene el usuario desde props
+            usuario: 'ronaldhg',//this.props.route.params.usuario, // obtiene el usuario desde props
             descripcion: '',
             precio: '',
             imagesSelected: [],
@@ -44,7 +54,7 @@ export default class RegistroProducto extends React.Component {
     };
 
     checkTextInput = async () => {
-        if (!this.state.descripcion.trim()) {
+        /* if (!this.state.descripcion.trim()) {
             this.setState({ showAlert: true, msj: 'Ingrese una descripción para el producto' });
             return;
         }
@@ -55,15 +65,22 @@ export default class RegistroProducto extends React.Component {
         if (this.state.imagesSelected.length < 1) {
             this.setState({ showAlert: true, msj: 'Ingrese una imagen para su producto' });
             return;
-        }
+        } */
+
         this.setState({ spinner: true })
-        const inserted = await insertarProducto(this.state.usuario, this.state.descripcion, this.state.precio);
+        /* Upload images to Clodinary */
+        let img_urls = await uploadImages(this.state.imagesSelected);
+        let newf = Promise.all(img_urls);
+        console.log(newf)
+        /* add product to Firebase */
+        /* const inserted = await addProduct(this.state.usuario, this.state.descripcion, this.state.precio, img_urls);         */
         this.setState({ spinner: false })
-        if (inserted) {
+
+        /* if (inserted) {
             this.setState({ showAlert2: true })
         } else {
-            this.setState({ showAlert: true, msj: "Ocurrió un problema, no se ha podido insertar el producto." })
-        }
+            this.setState({ showAlert: true, msj: "Ocurrió un problema, no se ha podido insertar el producto." }) 
+        } */
     };
 
     limpiarTextInputs = () => {
@@ -80,12 +97,23 @@ export default class RegistroProducto extends React.Component {
         });
 
         if (!result.cancelled) {
-            if (result.type !== "image") {
+            /* if (result.type !== "image") {
                 this.setState({ showAlert: true, msj: 'El archivo seleccionado no es una imagen' });
                 return;
+            } */
+
+            let extention = (result.uri.endsWith('.jpg')) ? 'jpg' : 'png';
+
+            const photo = {
+                uri: result.uri,
+                type: result.type + '/' + extention,
+                name: uuid() + '.' + extention
             }
+            
+            console.log(photo);
+
             const tempArray = this.state.imagesSelected;
-            tempArray.push(result.uri);
+            tempArray.push(photo);
             this.setState({ imagesSelected: tempArray });
         }
     };
@@ -141,11 +169,11 @@ export default class RegistroProducto extends React.Component {
                         )
                     }
                     {
-                        map(this.state.imagesSelected, (imageProduct, index) => (
+                        map(this.state.imagesSelected, (photo, index) => (
                             <Avatar
                                 key={index}
                                 style={styles.miniatura}
-                                source={{ uri: imageProduct }}
+                                source={{ uri: photo.uri }}
                                 onPress={() => { this.borrarImagen(index) }}
                             />
                         ))
@@ -163,6 +191,7 @@ export default class RegistroProducto extends React.Component {
                 <TouchableOpacity
                     style={style_app.button}
                     onPress={() => this.props.navigation.navigate('Login')} // cambiar
+                    onPress={() => console.log(this.state.imagesSelected)} // cambiar
                 >
                     <Text style={style_app.buttonText}>Volver</Text>
                 </TouchableOpacity>
