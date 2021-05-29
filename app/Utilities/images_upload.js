@@ -20,7 +20,7 @@ const handleUpdate = async (photo) => {
     data.append('upload_preset', upload_preset);
     data.append('cloud_name', cloud_name);
 
-    await fetch(api_base_url, {
+    const img_url = await fetch(api_base_url, {
         method: 'POST',
         body: data,
         headers: {
@@ -35,6 +35,7 @@ const handleUpdate = async (photo) => {
     }).catch(error => {
         console.log(error);
     });
+    return img_url;
 }
 
 /**
@@ -43,14 +44,16 @@ const handleUpdate = async (photo) => {
  **/
 const uploadImages = async (imagesSelected) => {
 
-    const promises = imagesSelected.map(async photo => {
-        const img = await handleUpdate(photo);
-        return img;
-    })
+    let img_urls = [];
 
-    return await Promise.all(promises);
+    for await (let photo of imagesSelected) {
+        const img = await handleUpdate(photo);
+        img_urls.push(img);
+    }
+    return img_urls
 }
 
 export {
-    uploadImages
+    uploadImages,
+    handleUpdate
 }

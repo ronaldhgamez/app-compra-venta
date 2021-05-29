@@ -54,7 +54,7 @@ export default class RegistroProducto extends React.Component {
     };
 
     checkTextInput = async () => {
-        /* if (!this.state.descripcion.trim()) {
+        if (!this.state.descripcion.trim()) {
             this.setState({ showAlert: true, msj: 'Ingrese una descripción para el producto' });
             return;
         }
@@ -65,22 +65,21 @@ export default class RegistroProducto extends React.Component {
         if (this.state.imagesSelected.length < 1) {
             this.setState({ showAlert: true, msj: 'Ingrese una imagen para su producto' });
             return;
-        } */
+        }
 
         this.setState({ spinner: true })
         /* Upload images to Clodinary */
         let img_urls = await uploadImages(this.state.imagesSelected);
-        let newf = Promise.all(img_urls);
-        console.log(newf)
+
         /* add product to Firebase */
-        /* const inserted = await addProduct(this.state.usuario, this.state.descripcion, this.state.precio, img_urls);         */
+         const inserted = await addProduct(this.state.usuario, this.state.descripcion, this.state.precio, img_urls);  
         this.setState({ spinner: false })
 
-        /* if (inserted) {
+        if (inserted) {
             this.setState({ showAlert2: true })
         } else {
             this.setState({ showAlert: true, msj: "Ocurrió un problema, no se ha podido insertar el producto." }) 
-        } */
+        }
     };
 
     limpiarTextInputs = () => {
@@ -97,10 +96,10 @@ export default class RegistroProducto extends React.Component {
         });
 
         if (!result.cancelled) {
-            /* if (result.type !== "image") {
+            if (result.type !== "image") {
                 this.setState({ showAlert: true, msj: 'El archivo seleccionado no es una imagen' });
                 return;
-            } */
+            }
 
             let extention = (result.uri.endsWith('.jpg')) ? 'jpg' : 'png';
 
@@ -109,7 +108,7 @@ export default class RegistroProducto extends React.Component {
                 type: result.type + '/' + extention,
                 name: uuid() + '.' + extention
             }
-            
+
             console.log(photo);
 
             const tempArray = this.state.imagesSelected;
