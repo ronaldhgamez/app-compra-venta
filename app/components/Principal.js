@@ -15,6 +15,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user: this.props.route.params.user, // obtiene el usuario desde props
             activeTab: 'menu_tab'
         }
     }
@@ -22,32 +23,32 @@ export default class App extends React.Component {
     tabs = [
         {
             key: 'menu_tab',
-            icon: 'menu',
-            label: 'Menu',
-            barColor: '#388E3C',
-            screen: <MenuScreen navigation={this.props.navigation} />,
+            icon: 'shopping-cart',
+            label: 'Productos',
+            barColor: 'black',
+            screen: <MenuScreen object={{ "user": this.props.route.params.user }} />,
             pressColor: 'rgba(255, 255, 255, 0.16)'
         },
         {
             key: 'profile_tab',
-            icon: 'menu',
+            icon: 'face',
             label: 'Perfil',
-            barColor: '#B71C1C',
-            screen: <ProfileScreen navigation={this.props.navigation} />,
+            barColor: 'black',
+            screen: <ProfileScreen object={{ "user": this.props.route.params.user }} />,
             pressColor: 'rgba(255, 255, 255, 0.16)'
         },
         {
             key: 'setting_tab',
             icon: 'settings',
             label: 'Opciones',
-            screen: <SettingsScreen navigation={this.props.navigation} />,
-            barColor: '#E64A19',
+            screen: <SettingsScreen object={{ "user": this.props.route.params.user }} />,
+            barColor: 'black',
             pressColor: 'rgba(255, 255, 255, 0.16)'
         }
     ]
 
     renderIcon = icon => ({ isActive }) => (
-        <Icon size={24} color="white" name={icon} />
+        <Icon size={20} color="lightgray" name={icon} />
     )
 
     renderTab = ({ tab, isActive }) => (

@@ -14,9 +14,6 @@ import style_app from '../Styles/app_styles'
 /* generates random ids for photos */
 import uuid from 'random-uuid-v4'
 
-/* to upload images to firebase */
-import storage from '@react-native-firebase/storage';
-
 import {
     addProduct
 } from '../Utilities/products_consults'
@@ -30,7 +27,7 @@ export default class RegistroProducto extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usuario: 'ronaldhg',//this.props.route.params.usuario, // obtiene el usuario desde props
+            usuario: this.props.route.params.usuario, // obtiene el usuario desde props
             descripcion: '',
             precio: '',
             imagesSelected: [],
@@ -108,8 +105,6 @@ export default class RegistroProducto extends React.Component {
                 type: result.type + '/' + extention,
                 name: uuid() + '.' + extention
             }
-
-            console.log(photo);
 
             const tempArray = this.state.imagesSelected;
             tempArray.push(photo);
@@ -190,7 +185,6 @@ export default class RegistroProducto extends React.Component {
                 <TouchableOpacity
                     style={style_app.button}
                     onPress={() => this.props.navigation.navigate('Login')} // cambiar
-                    onPress={() => console.log(this.state.imagesSelected)} // cambiar
                 >
                     <Text style={style_app.buttonText}>Volver</Text>
                 </TouchableOpacity>

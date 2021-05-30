@@ -6,14 +6,12 @@ import style_app from '../Styles/app_styles';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-import {
-    validarUsuario
-} from '../Utilities/consultas'
+import { validateUser } from '../Utilities/users_consults'
 
 export default function Login({ navigation }) {
 
-    const [user, setName] = useState("");
-    const [pas, setPas] = useState("");
+    const [user, setName] = useState("ronaldhg");
+    const [pas, setPas] = useState("0812");
     const [spinner, setSpi] = useState(false);
     const [showAlert, setAlert] = useState(false);
     const [msj, setMsj] = useState('');
@@ -31,10 +29,11 @@ export default function Login({ navigation }) {
             return;
         }
         setSpi(true)
-        const valido = await validarUsuario(user, pas);
+        const valido = await validateUser(user, pas);
         setSpi(false)
         if (valido) {
-            navigation.navigate('RegistroProducto', { "usuario": user }) // envía el usuario
+            //navigation.navigate('AddProduct', { "usuario": user }) // envía el usuario
+            navigation.navigate('Principal', { "user": user });
         } else {
             setMsj("El usuario o la contraseña es incorrecta")
             setAlert(true)
@@ -45,9 +44,7 @@ export default function Login({ navigation }) {
         <View style={style.mainContainer}>
             <Image
                 style={style.imageCar}
-                //source={require('../assets/carrito.png')}
                 source={require('../assets/bag.jpg')}
-
             />
             <Text style={style.textoPrincipal}>Tienda Online de Productos</Text>
 
@@ -55,6 +52,7 @@ export default function Login({ navigation }) {
                 placeholder="usuario"
                 style={style_app.textInput}
                 onChangeText={(val) => setName(val)}
+                value={user}
             />
 
             <TextInput
@@ -63,6 +61,7 @@ export default function Login({ navigation }) {
                 password={true}
                 style={style_app.textInput}
                 onChangeText={(val) => setPas(val)}
+                value={pas}
             />
 
             <TouchableOpacity
@@ -74,8 +73,7 @@ export default function Login({ navigation }) {
 
             <TouchableOpacity
                 style={style_app.button}
-                //onPress={() => navigation.navigate('Register')}
-                onPress={() => navigation.navigate('Principal')}
+                onPress={() => navigation.navigate('AddUser')}
             >
                 <Text style={style_app.buttonText}>Registrarme</Text>
             </TouchableOpacity>
@@ -96,7 +94,7 @@ export default function Login({ navigation }) {
                 showConfirmButton={true}
                 confirmText="OK"
                 confirmButtonColor="deepskyblue"
-                onConfirmPressed={() => {setAlert(false)}}
+                onConfirmPressed={() => { setAlert(false) }}
             />
         </View>
     )

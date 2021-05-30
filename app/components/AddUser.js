@@ -7,9 +7,8 @@ import style from '../Styles/Register_styles'
 import style_app from '../Styles/app_styles';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import {
-    insertarUsuario
-} from '../Utilities/consultas'
+
+import { addUser } from '../Utilities/users_consults'
 
 export default function Register({ navigation }) {
     const [name, setName] = useState("");
@@ -50,7 +49,7 @@ export default function Register({ navigation }) {
         }
 
         setSpi(true)
-        const inserted = await insertarUsuario(name, lasname, tele, user, pas);
+        const inserted = await addUser(name, lasname, tele, user, pas);
         setSpi(false)
         if (inserted) {
             setMsj('Usuario registrado');
@@ -63,6 +62,7 @@ export default function Register({ navigation }) {
 
     return (
         <View style={style.mainContainer}>
+            <Text style={{ marginBottom: '10%' }}></Text>
             <Text style={style_app.texto}>Ingrese sus datos</Text>
             <TextInput
                 placeholder="nombre"
