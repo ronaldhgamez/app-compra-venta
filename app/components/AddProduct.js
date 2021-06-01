@@ -27,7 +27,7 @@ export default class RegistroProducto extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usuario: this.props.route.params.usuario, // obtiene el usuario desde props
+            user: this.props.route.params.user, // obtiene el usuario desde props
             descripcion: '',
             precio: '',
             imagesSelected: [],
@@ -69,13 +69,13 @@ export default class RegistroProducto extends React.Component {
         let img_urls = await uploadImages(this.state.imagesSelected);
 
         /* add product to Firebase */
-         const inserted = await addProduct(this.state.usuario, this.state.descripcion, this.state.precio, img_urls);  
+        const inserted = await addProduct(this.state.user, this.state.descripcion, this.state.precio, img_urls);
         this.setState({ spinner: false })
 
         if (inserted) {
             this.setState({ showAlert2: true })
         } else {
-            this.setState({ showAlert: true, msj: "Ocurrió un problema, no se ha podido insertar el producto." }) 
+            this.setState({ showAlert: true, msj: "Ocurrió un problema, no se ha podido insertar el producto." })
         }
     };
 
@@ -110,6 +110,7 @@ export default class RegistroProducto extends React.Component {
             tempArray.push(photo);
             this.setState({ imagesSelected: tempArray });
         }
+        console.log(this.state.imagesSelected);
     };
 
     borrarImagen = (index) => {
@@ -184,7 +185,7 @@ export default class RegistroProducto extends React.Component {
 
                 <TouchableOpacity
                     style={style_app.button}
-                    onPress={() => this.props.navigation.navigate('Login')} // cambiar
+                    onPress={() => this.props.navigation.navigate('Principal')}
                 >
                     <Text style={style_app.buttonText}>Volver</Text>
                 </TouchableOpacity>
@@ -208,13 +209,13 @@ export default class RegistroProducto extends React.Component {
                     onConfirmPressed={() => {
                         this.setState({ showAlert: false })
                         if (this.state.back) {
-                            this.props.navigation.navigate('Login')
+                            this.props.navigation.navigate('Principal')
                         }
                     }}
                     onDismiss={() => { // click fuera de la alerta
                         this.setState({ showAlert: false })
                         if (this.state.back) {
-                            this.props.navigation.navigate('Login')
+                            this.props.navigation.navigate('Principal')
                         }
                     }}
                 />
@@ -232,7 +233,7 @@ export default class RegistroProducto extends React.Component {
                     confirmText="Sí"
                     confirmButtonColor="deepskyblue"
                     onCancelPressed={() => {
-                        this.props.navigation.navigate('Login')
+                        this.props.navigation.navigate('Principal')
                     }}
                     onConfirmPressed={() => {
                         this.setState({ showAlert2: false })
@@ -243,7 +244,6 @@ export default class RegistroProducto extends React.Component {
                         this.limpiarTextInputs()
                     }}
                 />
-
             </View>
         );
     }

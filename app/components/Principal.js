@@ -16,14 +16,16 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             user: this.props.route.params.user, // obtiene el usuario desde props
-            activeTab: 'menu_tab'
+            activeTab: 'menu_tab',
+            navigation: this.props.route.params.navigation
         }
     }
 
     tabs = [
         {
             key: 'menu_tab',
-            icon: 'shopping-cart',
+            icon: 'shopping-basket',
+            icon_type: 'font-awesome',
             label: 'Productos',
             barColor: 'black',
             screen: <MenuScreen object={{ "user": this.props.route.params.user }} />,
@@ -32,6 +34,7 @@ export default class App extends React.Component {
         {
             key: 'profile_tab',
             icon: 'face',
+            icon_type: 'material-icons',
             label: 'Perfil',
             barColor: 'black',
             screen: <ProfileScreen object={{ "user": this.props.route.params.user }} />,
@@ -39,16 +42,17 @@ export default class App extends React.Component {
         },
         {
             key: 'setting_tab',
-            icon: 'settings',
-            label: 'Opciones',
-            screen: <SettingsScreen object={{ "user": this.props.route.params.user }} />,
+            icon: 'player-settings',
+            icon_type: 'fontisto',
+            label: 'Cuenta',
+            screen: <SettingsScreen object={{ "user": this.props.route.params.user, navigation: this.props.route.params.navigation }} />,
             barColor: 'black',
             pressColor: 'rgba(255, 255, 255, 0.16)'
         }
     ]
 
-    renderIcon = icon => ({ isActive }) => (
-        <Icon size={20} color="lightgray" name={icon} />
+    renderIcon = (icon, icon_type) => ({ isActive }) => (
+        <Icon size={20} color="lightgray" name={icon} type={icon_type} />
     )
 
     renderTab = ({ tab, isActive }) => (
@@ -56,7 +60,7 @@ export default class App extends React.Component {
             isActive={isActive}
             key={tab.key}
             label={tab.label}
-            renderIcon={this.renderIcon(tab.icon)}
+            renderIcon={this.renderIcon(tab.icon, tab.icon_type)}
         />
     )
 

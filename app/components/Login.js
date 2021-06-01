@@ -32,8 +32,7 @@ export default function Login({ navigation }) {
         const valido = await validateUser(user, pas);
         setSpi(false)
         if (valido) {
-            //navigation.navigate('AddProduct', { "usuario": user }) // envía el usuario
-            navigation.navigate('Principal', { "user": user });
+            navigation.navigate('Principal', { "user": user, navigation });
         } else {
             setMsj("El usuario o la contraseña es incorrecta")
             setAlert(true)
