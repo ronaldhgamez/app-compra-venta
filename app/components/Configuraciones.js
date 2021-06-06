@@ -35,12 +35,12 @@ export default class Configuraciones extends React.Component {
     }
 
     render() {
-        let { card, cardImage, cardDescription, textPrice } = styles;
+        let { product_card } = styles;
         return (
             <>
-                <Text style={{ marginTop: '4%' }}></Text>
-                <TouchableOpacity style={card} onPress={() => this.state.navigation.navigate('AddProduct', { "user": this.state.user })}>
-                    <View style={{ flexDirection: 'row', alignSelf: 'stretch', margin: '0%' }}>
+                <Text style={{ marginTop: '15%' }}></Text>
+                <TouchableOpacity style={product_card} onPress={() => this.state.navigation.navigate('AddProduct', { "user": this.state.user })}>
+                    <View style={{ flexDirection: 'row', alignSelf: 'stretch' }}>
                         <Icon
                             reverse
                             size={15}
@@ -52,7 +52,7 @@ export default class Configuraciones extends React.Component {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={card} onPress={() => this.signOff()}>
+                <TouchableOpacity style={product_card} onPress={() => this.signOff()}>
                     <View style={{ flexDirection: 'row', alignSelf: 'stretch', margin: '0%' }}>
                         <Icon
                             reverse

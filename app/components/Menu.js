@@ -1,9 +1,8 @@
 import React from 'react';
 import { Text, FlatList } from 'react-native'
 import { SearchBar } from 'react-native-elements'
-import _renderItem from './FlatListProducts'
 import styles from '../Styles/profile_style'
-import showFlatListProducts from './FlatListProducts';
+import { _renderItem } from './FlatListProducts';
 
 export default class Menu extends React.Component {
 
@@ -61,16 +60,22 @@ export default class Menu extends React.Component {
 
     render() {
         let items = this.state.products;
+        let { container } = styles;
         return (
             <>
-                <Text style={{ marginTop: '2%' }}></Text>
+                <Text style={{ marginTop: '7%' }}></Text>
                 <SearchBar
                     placeholder="Busca un producto"
                     onChangeText={this.updateSearch}
                     value={this.state.search}
                 />
 
-                {showFlatListProducts(items)}
+                <FlatList
+                    style={container}
+                    data={items}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={_renderItem}
+                />
             </>
         );
     }

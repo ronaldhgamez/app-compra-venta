@@ -4,25 +4,18 @@ import { Image, Icon } from 'react-native-elements'
 import styles from '../Styles/profile_style'
 
 function _renderItem({ item, index }) {
-    let { card, cardImage, cardDescription, textPrice } = styles;
+    let { product_description, product_card, product_image, product_price } = styles;
     return (
-        <TouchableOpacity key={item.id} style={card} onPress={() => console.log(item.description)}>
-            {/* <ScrollView horizontal>
-                {
-                    item.images.map((link, index) =>
-                        <Image key={index.toString()} style={cardImage} source={{ uri: link }} />
-                    )
-                }
-            </ScrollView> */}
-            <Image key={index.toString()} style={cardImage} source={{ uri: item.images[0] }} />
-            <Text style={cardDescription}>{item.description} </Text>
-            <Text style={textPrice}>{"₡" + item.price}</Text>
-            <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
+        <TouchableOpacity key={item.id} style={product_card} /* onPress={() => console.log(item.description)} */>
+            <Image key={index.toString()} style={product_image} source={{ uri: item.images[0] }} />
+            <Text style={product_description}>{item.description} </Text>
+            <Text style={product_price}>{"₡" + item.price}</Text>
+            <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: '-15%' }}>
                 <Icon
                     reverse
-                    size={18}
-                    name='trash'
-                    type='ionicon'
+                    size={22}
+                    name='information-outline'
+                    type='material-community'
                     color='#517fa4'
                     onPress={() => { console.log("eliminando " + item.description) }}
                 />
@@ -31,14 +24,6 @@ function _renderItem({ item, index }) {
     );
 }
 
-export default function showFlatListProducts(items) {
-    let { container } = styles;
-    return (
-        <FlatList
-            style={container}
-            data={items}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={_renderItem}
-        />
-    );
+export {
+    _renderItem
 }
