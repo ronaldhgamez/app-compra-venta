@@ -12,7 +12,7 @@ export default StyleSheet.create({
     texto: {
         marginLeft: wp('6'),
         marginBottom: wp('2%'),
-        marginTop: wp('10%'),
+        marginTop: wp('4%'),
         fontSize: wp('5'),
         fontFamily: 'sans-serif-medium',
         fontWeight: 'bold',
@@ -42,19 +42,19 @@ export default StyleSheet.create({
     containerIcon: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: hp('11'),
-        width: wp('21'),
+        height: hp('15'),
+        width: wp('25'),
         backgroundColor: '#e3e3e3'
     },
     miniatura: {
-        width: hp('11'),
-        height: wp('21'),
+        height: hp('15'),
+        width: wp('25'),
         marginRight: 5,
         marginLeft: 5
     },
     textStyle: {
         marginLeft: wp('7'),
-        marginBottom: wp('10%'),
+        marginBottom: wp('5%'),
         marginTop: wp('2'),
         color: 'olivedrab'
     }

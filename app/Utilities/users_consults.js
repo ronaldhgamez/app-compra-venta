@@ -5,12 +5,14 @@ const { manifest } = Constants;
 const baseURL = `http://${manifest.debuggerHost.split(':').shift()}:4000`
 
 
-const addUser = async (name, lastname, tel, user, pass) => {
+const addUser = async (name, lastname, tel, exactAddress, biography, user, pass) => {
     const url = baseURL + '/api/addUser';
     const body = {
         "name": name,
         "lastname": lastname,
         "tel": tel,
+        "exactAddress": exactAddress, 
+        "biography": biography,
         "user": user,
         "pass": pass
     };
@@ -63,7 +65,7 @@ const getUserCollections = async (user) => {
             },
             body: JSON.stringify(body)
         });
-        let json = await response.json(); // json={ valido: <true|false> }
+        let json = await response.json();
         return json;
     } catch (error) {
         console.log(error);

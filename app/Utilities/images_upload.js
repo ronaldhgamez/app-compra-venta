@@ -30,7 +30,6 @@ const handleUpdate = async (photo) => {
     }).then(res => {
         return res.json();
     }).then(data => {
-        console.log(data.secure_url);
         return data.secure_url;
     }).catch(error => {
         console.log(error);

@@ -1,9 +1,8 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
+
 import { View, Text, TouchableOpacity } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
-
-import style from '../Styles/Register_styles'
 import style_app from '../Styles/app_styles';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -14,6 +13,8 @@ export default function Register({ navigation }) {
     const [name, setName] = useState("");
     const [lasname, setLasname] = useState("");
     const [tele, setTele] = useState("");
+    const [exactAddress, setExactAddress] = useState("");
+    const [biography, setBiography] = useState("");
     const [user, setUser] = useState("");
     const [pas, setPas] = useState("");
     const [spinner, setSpi] = useState(false);
@@ -37,6 +38,11 @@ export default function Register({ navigation }) {
             setAlert(true)
             return;
         }
+        if (!exactAddress.trim()) {
+            setMsj('Por favor ingrese su dirección exacta');
+            setAlert(true)
+            return;
+        }
         if (!user.trim()) {
             setMsj('Por favor cree un nombre de usuario');
             setAlert(true)
@@ -49,7 +55,7 @@ export default function Register({ navigation }) {
         }
 
         setSpi(true)
-        const inserted = await addUser(name, lasname, tele, user, pas);
+        const inserted = await addUser(name, lasname, tele, exactAddress, biography, user, pas);
         setSpi(false)
         if (inserted) {
             setMsj('Usuario registrado');
@@ -79,6 +85,17 @@ export default function Register({ navigation }) {
             <TextInput placeholder="teléfono" keyboardType='numeric'
                 style={style_app.textInput}
                 onChangeText={(val) => setTele(val)}
+            />
+
+            <TextInput placeholder="dirección exacta"
+                style={style_app.textInput}
+                onChangeText={(val) => setExactAddress(val)}
+            />
+
+            <TextInput placeholder='biografía'
+                multiline
+                style={style_app.biography}
+                onChangeText={(val) => setBiography(val)}
             />
 
             <TextInput placeholder="nombre de usuario"
@@ -140,3 +157,15 @@ export default function Register({ navigation }) {
         </View>
     )
 }
+
+
+import { StyleSheet } from 'react-native'
+
+const style = StyleSheet.create({
+    mainContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+})

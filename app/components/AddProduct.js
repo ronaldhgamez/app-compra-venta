@@ -28,6 +28,7 @@ export default class RegistroProducto extends React.Component {
         super(props);
         this.state = {
             user: this.props.route.params.user, // obtiene el usuario desde props
+            product_name: '',
             descripcion: '',
             precio: '',
             imagesSelected: [],
@@ -39,6 +40,11 @@ export default class RegistroProducto extends React.Component {
             showAlert2: false,
         };
     }
+
+    updateName = (event) => {
+        const product_name = event.nativeEvent.text;
+        this.setState({ product_name });
+    };
 
     updateDescription = (event) => {
         const desc = event.nativeEvent.text;
@@ -69,7 +75,7 @@ export default class RegistroProducto extends React.Component {
         let img_urls = await uploadImages(this.state.imagesSelected);
 
         /* add product to Firebase */
-        const inserted = await addProduct(this.state.user, this.state.descripcion, this.state.precio, img_urls);
+        const inserted = await addProduct(this.state.user, this.state.product_name, this.state.descripcion, this.state.precio, img_urls);
         this.setState({ spinner: false })
 
         if (inserted) {
@@ -80,7 +86,7 @@ export default class RegistroProducto extends React.Component {
     };
 
     limpiarTextInputs = () => {
-        this.setState({ descripcion: '', precio: '', imagesSelected: [] })
+        this.setState({ product_name: '', descripcion: '', precio: '', imagesSelected: [] })
     }
 
     // https://mixkit.co/free-stock-video/skyline-of-a-desert-with-the-moon-at-night-40047/
@@ -110,7 +116,6 @@ export default class RegistroProducto extends React.Component {
             tempArray.push(photo);
             this.setState({ imagesSelected: tempArray });
         }
-        console.log(this.state.imagesSelected);
     };
 
     borrarImagen = (index) => {
@@ -123,23 +128,31 @@ export default class RegistroProducto extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Text style={styles.texto}>Descripción del producto</Text>
+                <Text style={styles.texto}>Detalles del producto</Text>
+
+                <TextInput
+                    style={styles.inputPrecio}
+                    placeholder='nombre de producto'
+                    maxLength={45}  //setting limit of input
+                    underlineColorAndroid={'transparent'}
+                    onChange={this.updateName}
+                    value={this.state.product_name}
+                />
 
                 <TextInput
                     multiline
                     style={styles.inputDescrip}
-                    placeholder='Añade una descripción'
+                    placeholder='añade una descripción'
                     underlineColorAndroid={'transparent'}
                     onChange={this.updateDescription}
                     value={this.state.descripcion}
                 />
                 <TextInput
                     style={styles.inputPrecio}
-                    placeholder='Precio'
+                    placeholder='precio'
                     keyboardType='numeric'
                     maxLength={15}  //setting limit of input
                     underlineColorAndroid={'transparent'}
-
                     onChange={this.updatePrecio}
                     value={this.state.precio}
                 />

@@ -10,18 +10,18 @@ export default StyleSheet.create({
     },
     user_image: {
         height: '20%',
-        width: '30%',
+        width: '38%',
         margin: '2%',
         alignSelf: 'center',
         resizeMode: 'stretch'
     },
     textUserName: {
-        fontSize: 20,
+        fontSize: 24,
         alignSelf: 'center',
         fontWeight: 'bold',
     },
     cardDescription: {
-        fontSize: 12,
+        fontSize: 16,
         marginLeft: '1%',
         marginTop: '1%',
         alignSelf: 'center'
@@ -30,24 +30,35 @@ export default StyleSheet.create({
    
     /* Users' products */
     products_container: {
-        backgroundColor: 'white'
+        backgroundColor: 'azure',
+        borderRadius: 15,
+        margin: 5,
     },
     product_card: {
         alignSelf: 'center',
-        marginVertical: '1%',
-        width: '100%',
-        //backgroundColor: 'azure',
-        borderColor: 'azure',
-        elevation: 2,
+        marginVertical: '1.5%',
+        width: '90%',
+        backgroundColor: 'white',
+        elevation: 3,
     },
     product_image: {
-        margin: '2%',
-        width: '35%',
-        height: 120,
-        resizeMode: 'cover',
+        width: '100%',
+        height: 340,
+        resizeMode: 'cover'
+    },
+    product_name: {
+        fontSize: 14,
+        marginLeft: 7,
+        fontWeight: 'bold',
+    },
+    product_description: {
+        fontSize: 14,
+        marginLeft: 7,
+        margin: 2
     },
     product_price: {
-        fontSize: 14,
+        fontSize: 12,
+        marginLeft: 7,
         marginBottom: 5,
         color: 'deeppink',
         fontWeight: 'bold',

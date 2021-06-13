@@ -7,7 +7,7 @@ import BottomNavigation, {
 
 import { Icon } from 'react-native-elements'
 import MenuScreen from './Menu'
-import ProfileScreen from './Perfil'
+import ProfileScreen from './Profile'
 import SettingsScreen from './Configuraciones'
 
 export default class App extends React.Component {
@@ -17,7 +17,7 @@ export default class App extends React.Component {
         this.state = {
             user: this.props.route.params.user, // obtiene el usuario desde props
             activeTab: 'menu_tab',
-            navigation: this.props.route.params.navigation
+            //navigation: this.props.route.params.navigation
         }
     }
 

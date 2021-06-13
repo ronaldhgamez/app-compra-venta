@@ -1,8 +1,11 @@
 import React from 'react';
+import styles from '../Styles/Menu_styles'
+
 import { Text, FlatList } from 'react-native'
 import { SearchBar } from 'react-native-elements'
-import styles from '../Styles/profile_style'
-import { _renderItem } from './FlatListProducts';
+import { _renderItem } from './FlatListMenuProducts';
+
+import { getAllProducts } from '../Utilities/products_consults'
 
 export default class Menu extends React.Component {
 
@@ -11,59 +14,48 @@ export default class Menu extends React.Component {
         this.state = {
             search: '',
             user: props.object.user,
-            products: [
-                {
-                    "price": "300",
-                    "user": "ronaldhg",
-                    "description": "Maruchan ",
-                    "images": [
-                        "https://res.cloudinary.com/ap-proyecto/image/upload/v1622428566/jetihuenunoor5uk7sop.jpg"
-                    ],
-                    "id": "1dIYm0uKQ4aCvEMU40MS"
-                },
-                {
-                    "description": "Se venden jugos del monte bien ricos",
-                    "images": [
-                        "https://res.cloudinary.com/ap-proyecto/image/upload/v1622439805/h514fyhecz7cu40w5aha.jpg"
-                    ],
-                    "user": "ronaldhg",
-                    "price": "1000.00",
-                    "id": "UfahxXpO7YAf4NfL6DeV"
-                },
-                {
-                    "price": "3500",
-                    "description": "Sombrero usado",
-                    "images": [
-                        "https://res.cloudinary.com/ap-proyecto/image/upload/v1622439947/dgtzug6woe4mc8qo80dy.jpg"
-                    ],
-                    "user": "ronaldhg",
-                    "id": "W5xKAphOSkqB7X90vIWa"
-                },
-                {
-                    "price": "2000.63",
-                    "images": [
-                        "https://res.cloudinary.com/ap-proyecto/image/upload/v1622428522/nwxokl5za2misov0oyd5.jpg",
-                        "https://res.cloudinary.com/ap-proyecto/image/upload/v1622428523/su0asryktugav4kak5kx.jpg"
-                    ],
-                    "description": "Panqueques",
-                    "user": "ronaldhg",
-                    "id": "ya44u9o3WmGVLVy57xnJ"
-                }
-            ]
+            products: []
         }
+    }
+
+    componentDidMount() {
+        // To update list of products in the view
+        const getProducts = async _ => {
+            const products = await getAllProducts(this.state.user);
+            this.setState({ products });
+        }
+        getProducts();
     }
 
     updateSearch = (search) => {
         this.setState({ search });
-        console.log(search)
+        this.filter(search)
     };
+
+    filter = (word) => {
+        this.state.products.map((product) => {
+
+            let description = product.product_name.toLowerCase() + ' ' +  product.description.toLowerCase();
+            var splited = word.toLowerCase().split(' ');
+            var match = true;
+
+            for (var i in splited) {
+                // validates if description matches with the word searched.
+                if (!description.includes(splited[i])) {
+                    match = false;
+                    break;
+                }
+            }
+            product.display = match;
+        });
+    }
 
     render() {
         let items = this.state.products;
         let { container } = styles;
         return (
             <>
-                <Text style={{ marginTop: '7%' }}></Text>
+                <Text style={{ marginTop: '2%' }}></Text>
                 <SearchBar
                     placeholder="Busca un producto"
                     onChangeText={this.updateSearch}

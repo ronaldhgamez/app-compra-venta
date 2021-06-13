@@ -27,9 +27,16 @@ export default StyleSheet.create({
         fontWeight: 'bold'
     },
     textInput: {
-        marginBottom: 15,
-        height: hp('5%'),
-        width: wp('70%'),
+        marginBottom: '3%',
+        height: '5%',
+        width: '70%',
+        borderColor: 'gray',
+        borderWidth: 0.4
+    },
+    biography: {
+        marginBottom: '3%',
+        height: '12%',
+        width: '70%',
         borderColor: 'gray',
         borderWidth: 0.4
     },
