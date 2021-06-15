@@ -119,11 +119,11 @@ export default class Profile extends React.Component {
                     <Text style={textUserName}>{this.state.name + " " + this.state.lastname}</Text>
                     <Text style={cardDescription}>{this.state.biography}</Text>
                     {
-                        /* display soda's exact address */
+                        /* display user's exact address */
                         this.render_info('google-maps', 'material-community', this.state.exactAddress, cardDescription)
                     }
                     {
-                        /* display soda's telephone number */
+                        /* display user's telephone number */
                         this.render_info('telephone', 'foundation', this.state.tel, cardDescription)
                     }
                 </View>

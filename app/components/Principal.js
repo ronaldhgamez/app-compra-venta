@@ -9,6 +9,7 @@ import { Icon } from 'react-native-elements'
 import MenuScreen from './Menu'
 import ProfileScreen from './Profile'
 import SettingsScreen from './Configuraciones'
+import Notifications from './Notifications'
 
 export default class App extends React.Component {
 
@@ -17,7 +18,7 @@ export default class App extends React.Component {
         this.state = {
             user: this.props.route.params.user, // obtiene el usuario desde props
             activeTab: 'menu_tab',
-            //navigation: this.props.route.params.navigation
+            navigation: this.props.route.params.navigation
         }
     }
 
@@ -28,7 +29,7 @@ export default class App extends React.Component {
             icon_type: 'font-awesome',
             label: 'Productos',
             barColor: 'black',
-            screen: <MenuScreen object={{ "user": this.props.route.params.user }} />,
+            screen: <MenuScreen object={{ "user": this.props.route.params.user, navigation: this.props.route.params.navigation }} />,
             pressColor: 'rgba(255, 255, 255, 0.16)'
         },
         {
@@ -38,6 +39,15 @@ export default class App extends React.Component {
             label: 'Perfil',
             barColor: 'black',
             screen: <ProfileScreen object={{ "user": this.props.route.params.user }} />,
+            pressColor: 'rgba(255, 255, 255, 0.16)'
+        },
+        {
+            key: 'notifications_tab',
+            icon: 'notifications',
+            icon_type: 'material-icon',
+            label: 'Notifications',
+            screen: <Notifications object={{ "user": this.props.route.params.user }} />,
+            barColor: 'black',
             pressColor: 'rgba(255, 255, 255, 0.16)'
         },
         {
@@ -67,7 +77,8 @@ export default class App extends React.Component {
     renderScreen = () => {
         return this.state.activeTab == 'menu_tab' && this.tabs[0].screen ||
             this.state.activeTab == 'profile_tab' && this.tabs[1].screen ||
-            this.tabs[2].screen
+            this.state.activeTab == 'notifications_tab' && this.tabs[2].screen ||
+            this.tabs[3].screen
     }
 
     render() {

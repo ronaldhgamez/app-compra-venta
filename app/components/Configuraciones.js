@@ -9,7 +9,7 @@ import styles from '../Styles/profile_style'
 
 export default class Configuraciones extends React.Component {
 
-    _isMounted = false;
+    /* _isMounted = false; */
 
     constructor(props) {
         super(props);
@@ -19,16 +19,16 @@ export default class Configuraciones extends React.Component {
         }
     }
 
-    componentDidMount() {
+    /* componentDidMount() {
         this._isMounted = true;
         if (this._isMounted) {
 
         }
-    }
+    } */
 
-    componentWillUnmount() {
+    /* componentWillUnmount() {
         this._isMounted = false;
-    }
+    } */
 
     signOff () {
         this.state.navigation.navigate('Login');

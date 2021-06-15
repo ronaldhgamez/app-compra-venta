@@ -14,12 +14,12 @@ export default StyleSheet.create({
     button: {
         alignSelf: 'stretch',
         alignItems: 'center',
-        padding: wp(2),
+        padding: wp(3),
         backgroundColor: 'deeppink', // deepskyblue
         marginTop: wp(3),
         marginLeft: wp('25%'),
         marginRight: wp('25%'),
-        borderRadius: 30
+        borderRadius: 19
     },
     buttonText: {
         color: 'white',

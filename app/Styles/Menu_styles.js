@@ -38,11 +38,11 @@ export default StyleSheet.create({
         alignSelf: 'center',
         marginVertical: '1.5%',
         width: '90%',
-        backgroundColor: 'white',
+        backgroundColor: 'snow',
         elevation: 3,
     },
     product_image: {
-        width: '100%',
+        width: 324,
         height: 340,
         resizeMode: 'cover'
     },
@@ -54,7 +54,7 @@ export default StyleSheet.create({
     product_description: {
         fontSize: 14,
         marginLeft: 7,
-        margin: 2
+        margin: 2,
     },
     product_price: {
         fontSize: 12,

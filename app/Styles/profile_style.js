@@ -36,7 +36,7 @@ export default StyleSheet.create({
         alignSelf: 'center',
         marginVertical: '1%',
         width: '100%',
-        //backgroundColor: 'azure',
+        backgroundColor: 'snow',
         borderColor: 'azure',
         elevation: 2,
     },

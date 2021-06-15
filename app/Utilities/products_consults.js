@@ -1,9 +1,6 @@
 import fetch from 'node-fetch'
-import Constants from "expo-constants";
 
-const { manifest } = Constants;
-const baseURL = `http://${manifest.debuggerHost.split(':').shift()}:4000`
-
+const baseURL = "https://compra-venta-backend-nodejs.herokuapp.com";
 
 const addProduct = async (user, product_name, description, price, img_urls) => {
 
@@ -71,6 +68,22 @@ const getAllProducts = async (user) => {
     }
 }
 
+const getProductCollection = async (id) => {
+
+    const url = `${baseURL}/api/getProductCollection`;
+    const body = { "id": id };
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+    return await response.json();
+}
+
 const deleteProduct = async (id) => {
 
     const url = `${baseURL}/api/deleteProduct`;
@@ -97,5 +110,6 @@ export {
     addProduct,
     getUserProducts,
     getAllProducts,
-    deleteProduct
+    deleteProduct,
+    getProductCollection
 }

@@ -36,7 +36,8 @@ export default StyleSheet.create({
     viewImages: {
         flexDirection: 'row',
         marginHorizontal: hp('3'),
-        marginTop: 20,
+        alignSelf: 'center',
+        marginTop: 5,
         marginBottom: 10
     },
     containerIcon: {
@@ -53,9 +54,9 @@ export default StyleSheet.create({
         marginLeft: 5
     },
     textStyle: {
-        marginLeft: wp('7'),
-        marginBottom: wp('5%'),
+        marginBottom: '3%',
         marginTop: wp('2'),
-        color: 'olivedrab'
+        color: 'olivedrab',
+        textAlign: 'center'
     }
 });

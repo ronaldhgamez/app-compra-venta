@@ -1,9 +1,10 @@
 import fetch from 'node-fetch'
-import Constants from "expo-constants";
 
-const { manifest } = Constants;
-const baseURL = `http://${manifest.debuggerHost.split(':').shift()}:4000`
+//import Constants from "expo-constants";
+//const { manifest } = Constants;
+//const baseURL = `http://${manifest.debuggerHost.split(':').shift()}:4000`
 
+const baseURL = "https://compra-venta-backend-nodejs.herokuapp.com";
 
 const addUser = async (name, lastname, tel, exactAddress, biography, user, pass) => {
     const url = baseURL + '/api/addUser';
